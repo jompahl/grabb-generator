@@ -6,9 +6,36 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #191919;
+  color: #fafafa;
+  text-align: center;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  width: 40%;
+  display: flex;
+  align-items: center;
+  box-align: center;
+}
+
+.playerInformation {
+  display: flex;
+  flex-direction: column;
 }
