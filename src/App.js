@@ -12,11 +12,11 @@ class App extends Component {
           <Link to="/">Start</Link>
           <Link to="/grabbar">Grabbar</Link>
           <Link to="/generator">Generator</Link>
-          <Link to="/Settings">Tic Tac Toe</Link>
+          <Link to="/settings">Tic Tac Toe</Link>
         </nav>
         <Route exact path="/" render={() => <div>jompahl bajs</div>} />
         <Route path="/grabbar" render={() => <Grabbar />} />
-        <Route path="/Settings" render={() => <Settings />} />
+        <Route path="/settings" render={() => <Settings />} />
       </Router>
     );
   }
