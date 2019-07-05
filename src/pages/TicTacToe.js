@@ -163,12 +163,9 @@ class TicTacToe extends Component {
     const winningCombination = checkWinner(board);
     const lastGame = games[games.length - 1];
     const hasWinner = lastGame && lastGame.id === gameId;
-    console.log(hasWinner);
     const xWonCount = games.filter(game => game.winner === "X").length;
     const oWonCount = games.filter(game => game.winner === "O").length;
     const hasMoves = totalMoves > 0;
-
-    console.log({ selected: this.state.selected });
 
     return (
       <div id="game">
