@@ -111,6 +111,8 @@
   align-items: center;
   flex-direction: row;
   flex: 1 0 0;
+  background: #191919;
+  color: #fafafa;
 }
 
 #head {
@@ -231,10 +233,16 @@
 
 .board-container {
   flex: 0 0 302px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .timer-container {
   flex: 1 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .player {
@@ -250,11 +258,6 @@
 
 .playerInformation {
   display: flex;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
 }
 
 .submit {

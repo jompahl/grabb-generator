@@ -17,21 +17,11 @@ function checkWinner(board) {
   ];
 
   for (let i = 0; i < moves.length; i++) {
-    // i = 0
     const move = moves[i];
-    // move = [0, 3, 6]
 
     const v0 = board[move[0]];
-    // move[0] = 0
-    // v0 = board[0]
-
     const v1 = board[move[1]];
-    // move[1] = 3
-    // v1 = board[3]
-
     const v2 = board[move[2]];
-    // move[2] = 6
-    // v2 = board[6]
 
     if (v0 !== "" && v0 === v1 && v1 === v2) {
       return move;
@@ -43,11 +33,10 @@ function checkWinner(board) {
 
 const initialState = {
   gameId: 0,
-  turn: "X",
+  //turn: "X",
   board: Array(9).fill(""),
   totalMoves: 0,
-  selected: null,
-  count: 10
+  selected: null
 };
 
 class TicTacToe extends Component {
@@ -56,7 +45,8 @@ class TicTacToe extends Component {
     this.state = {
       ...initialState,
       games: [],
-      timesXWon: 0
+      timesXWon: 0,
+      turn: "X"
     };
   }
 
@@ -74,28 +64,31 @@ class TicTacToe extends Component {
     const { turn, selected, board } = this.state;
     const clickedSquare = board[i];
 
+    // In round two, we must start by selecting which piece to move.
     if (selected == null) {
-      if (clickedSquare === turn) {
-        return { selected: i };
+      // We are only allowed to select our own piece.
+      if (clickedSquare !== turn) {
+        return null;
       }
 
+      return { selected: i };
+    }
+
+    // When we have a selected piece, we allow changing it to another one of our pieces.
+    if (clickedSquare === turn) {
+      return { selected: i };
+    }
+
+    // It's not allowed to move the selected piece to our opponent's squares.
+    if (clickedSquare !== "") {
       return null;
     }
 
-    // When we have a selected box, we can only place it on
-    // empty slots.
-    if (clickedSquare !== "" || clickedSquare === turn) {
-      if (clickedSquare === turn) {
-        return { selected: i };
-      }
-
-      return null;
-    }
-
+    // Move the selected piece to an empty square.
     const newBoard = [...board];
     newBoard[i] = turn;
     newBoard[selected] = "";
-    return { board: newBoard, selected: "" };
+    return { board: newBoard, selected: null };
   };
 
   handleClick = i => {
@@ -132,13 +125,18 @@ class TicTacToe extends Component {
       }
     }
 
-    this.setState({
-      games,
-      turn,
-      totalMoves,
-      selected,
-      board
-    });
+    this.setState(
+      {
+        games,
+        turn,
+        totalMoves,
+        selected,
+        board
+      },
+      () => {
+        console.log({ selected: this.state.selected, turn: this.state.turn });
+      }
+    );
   };
 
   onTimerEnded = player => {
@@ -155,12 +153,21 @@ class TicTacToe extends Component {
   };
 
   handleRestart = () => {
-    this.setState({ ...initialState, gameId: this.state.gameId + 1 });
+    let { turn, totalMoves } = this.state;
+
+    if (totalMoves % 2 === 0) {
+      turn = turn === "X" ? "O" : "X";
+    }
+
+    this.setState({
+      ...initialState,
+      gameId: this.state.gameId + 1,
+      turn
+    });
   };
 
   render() {
     const { board, totalMoves, turn, gameId, games } = this.state;
-    const winningCombination = checkWinner(board);
     const lastGame = games[games.length - 1];
     const hasWinner = lastGame && lastGame.id === gameId;
     const xWonCount = games.filter(game => game.winner === "X").length;
@@ -187,13 +194,11 @@ class TicTacToe extends Component {
           {hasWinner && <div>Won: {turn === "X" ? "O" : "X"}</div>}
           <div className={cn("board", { hasWinner })}>
             {board.map((value, index) => {
-              console.log({ index, value });
               return (
                 <button
                   key={index}
                   className={cn("square", {
                     isWinning: hasWinner && lastGame.winner === value,
-                    // winningCombination && winningCombination.includes(index),
                     isSelected: this.state.selected === index,
                     timesUp: hasWinner
                   })}

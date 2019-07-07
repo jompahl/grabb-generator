@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import TicTacToe from "./TicTacToe";
-//import TicTacToe from "./pages/TicTacToe";
+import { Button, TextInputField, Pane, SelectField } from "evergreen-ui";
 
 class Settings extends Component {
   constructor(props) {
@@ -10,7 +10,7 @@ class Settings extends Component {
       player2Name: "",
       time: "3",
       increment: "2",
-      didstart: true
+      didstart: false
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -34,150 +34,72 @@ class Settings extends Component {
       return <TicTacToe {...this.state} />;
     }
     return (
-      <form className="form" onSubmit={this.handleSubmit}>
-        <label>
-          Player 1 Name:
-          <input
-            type="text"
+      <Pane
+        display="flex"
+        alignItems="center"
+        flexDirection="column"
+        justifyContent="center"
+        marginTop={50}
+      >
+        <Pane
+          width={600}
+          padding={20}
+          borderRadius={3}
+          border="default"
+          display="flex"
+          flexDirection="column"
+        >
+          <TextInputField
+            label=" Player 1"
+            placeholder="Firstname Lastname"
             value={player1Name}
             onChange={evt => {
               this.setState({ player1Name: evt.target.value });
             }}
           />
-        </label>
-        <label>
-          Player 2 Name:
-          <input
-            type="text"
+          <TextInputField
+            label=" Player 2"
+            placeholder="Firstname Lastname"
             value={player2Name}
             onChange={evt => {
               this.setState({ player2Name: evt.target.value });
             }}
           />
-        </label>
-        <label>
-          Time:
-          <input
-            type="text"
+          <TextInputField
+            type="number"
+            label="Time"
+            placeholder="10"
             value={time}
             onChange={evt => {
               this.setState({ time: evt.target.value });
             }}
           />
-        </label>
-        <label>
-          Time increment:
-          <input
-            type="text"
+          <SelectField
+            label="Time increment"
             value={increment}
             onChange={evt => {
               this.setState({ increment: evt.target.value });
             }}
-          />
-        </label>
-        <input className="submit" type="submit" value="Submit" />
-      </form>
+          >
+            {Array.from({ length: 11 }, (key, index) => (
+              <option key={index} value={index}>
+                {index}
+              </option>
+            ))}
+          </SelectField>
+          <Pane display="flex" justifyContent="flex-end">
+            <Button
+              appearance="primary"
+              onClick={this.handleSubmit}
+              iconBefore="tick-circle"
+            >
+              Start Game
+            </Button>
+          </Pane>
+        </Pane>
+      </Pane>
     );
   }
 }
-
-/*constructor(props) {
-    super(props);
-    this.state = {
-      player1: "",
-      player1Time: "",
-      player1Increment: "",
-      player2: "",
-      player2Time: "",
-      player2Increment: "",
-      didStart: false
-    };
-  }
-
-  isInputNumber(evt) {
-    var ch = String.fromCharCode(evt.which);
-
-    if (!/[0-9]/.test(ch)) {
-      evt.preventDefault();
-    }
-  }
-
-  render() {
-    const {
-      player1,
-      player2,
-      didStart,
-      player1Time,
-      player1Increment,
-      player2Time,
-      player2Increment
-    } = this.state;
-
-    if (didStart) {
-      return <TicTacToe {...this.state} />;
-    }
-
-    return (
-      <div id="settings">
-        <div className="player">
-          <label>Player 1 name: </label>
-          <input
-            className="input"
-            value={player1}
-            onChange={evt => {
-              this.setState({ player1: evt.target.value });
-            }}
-          />
-          <input
-            className="input"
-            value={player1Time}
-            onChange={evt => {
-              this.setState({ player1Time: evt.target.value });
-            }}
-          />
-          <input
-            className="input"
-            type="numeric"
-            value={player1Increment}
-            onChange={evt => {
-              this.setState({ player1Increment: evt.target.value });
-            }}
-          />
-        </div>
-        <div className="player">
-          <input
-            className="input"
-            value={player2}
-            onChange={evt => {
-              this.setState({ player2: evt.target.value });
-            }}
-          />
-          <input
-            className="input"
-            value={player2Time}
-            onChange={evt => {
-              this.setState({ player2Time: evt.target.value });
-            }}
-          />
-          <input
-            className="input"
-            value={player2Increment}
-            onChange={evt => {
-              this.setState({ player2Increment: evt.target.value });
-            }}
-          />
-        </div>
-        <button
-          className="submitSettings"
-          onClick={() => {
-            this.setState({ didStart: true });
-          }}
-        >
-          Submit
-        </button>
-      </div>
-    );
-  }
-}*/
 
 export default Settings;
