@@ -273,3 +273,23 @@
   left: 458px;
   top: 120px;
 }
+
+.RiddleBoard {
+  border: 1px solid black;
+  box-shadow: 0 1px 14px 4px rgba(0, 0, 0, 0.4);
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  width: 755px;
+  border-radius: 6px;
+  overflow: hidden;
+  height: 600px;
+}
+
+.Riddlesquare {
+  font-weight: 700;
+  font-size: 12px;
+  width: 145px;
+  height: 114px;
+}

@@ -39,8 +39,8 @@ const grabb1 = new GrabbModel(
       value: 90
     }
   ],
-  5,
-  1
+  11,
+  2
 );
 const grabb2 = new GrabbModel(
   "Tobias",
@@ -82,7 +82,7 @@ const grabb2 = new GrabbModel(
       value: 99
     }
   ],
-  0,
+  2,
   0
 );
 
@@ -126,7 +126,7 @@ const grabb3 = new GrabbModel(
       value: 80
     }
   ],
-  5,
+  9,
   1
 );
 
@@ -302,7 +302,7 @@ const grabb7 = new GrabbModel(
       value: 90
     }
   ],
-  5,
+  9,
   1
 );
 
@@ -390,8 +390,8 @@ const grabb9 = new GrabbModel(
       value: 80
     }
   ],
-  0,
-  0
+  6,
+  1
 );
 
 const grabb10 = new GrabbModel(
@@ -434,8 +434,8 @@ const grabb10 = new GrabbModel(
       value: 99
     }
   ],
-  0,
-  0
+  2,
+  6
 );
 
 export const grabbar = [

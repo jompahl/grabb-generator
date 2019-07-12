@@ -12,11 +12,29 @@ class Riddle extends Component {
   render() {
     const table = this.state.table;
     return (
-      <div>
-        {table.map(index => {
-          return <TextInputField key={index} label="Info" />;
-        })}
-      </div>
+      <React.Fragment>
+        <div className="RiddleBoard">
+          {table.map(index => {
+            return (
+              <input
+                key={index}
+                className="Riddlesquare"
+                type="text"
+                bsSize="large"
+                //value={table[{ index }]}
+                onChange={evt => {
+                  this.setState({
+                    table: table.push(evt.target.value)
+                  });
+                }}
+              />
+            );
+          })}
+        </div>
+        <div>
+          <li>1. {table[5]} bor i det röda huset.</li>
+        </div>
+      </React.Fragment>
     );
   }
 }

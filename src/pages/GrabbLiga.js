@@ -29,17 +29,37 @@ import { grabbar } from "../data";
 class GrabbLiga extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      winsSelected: false
+    };
   }
 
   render() {
+    const winsSelected = this.state.winsSelected;
+
+    if (!winsSelected) {
+      grabbar.sort(function(a, b) {
+        return b.points - a.points;
+      });
+    } else {
+      grabbar.sort(function(a, b) {
+        return b.wins - a.wins;
+      });
+    }
+
     return (
-      <Table scroll=false>
+      <Table>
         <Table.Head>
           <Table.TextHeaderCell>Grabb</Table.TextHeaderCell>
-          <Table.TextHeaderCell>Vinster</Table.TextHeaderCell>
+          <Table.TextHeaderCell
+            isSelectable
+            onSelect={() => this.setState({ winsSelected: true })}
+          >
+            Vinster
+          </Table.TextHeaderCell>
           <Table.TextHeaderCell>Poäng</Table.TextHeaderCell>
         </Table.Head>
-        <Table.Body height={240}>
+        <Table.Body height={480}>
           {grabbar.map(grabb => (
             <Table.Row
               key={grabb.name}
