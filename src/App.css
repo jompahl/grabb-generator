@@ -283,7 +283,6 @@
   flex-wrap: wrap;
   width: 755px;
   border-radius: 6px;
-  overflow: hidden;
   height: 600px;
 }
 
@@ -292,4 +291,45 @@
   font-size: 12px;
   width: 145px;
   height: 114px;
+}
+
+.houseNumber {
+  display: flex;
+  justify-content: space-around;
+  width: 755px;
+  padding-bottom: 10px;
+}
+
+.riddleScreen {
+  display: flex;
+  flex-direction: row;
+}
+
+.houseInfo {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -webkit-justify-content: space-around;
+  justify-content: space-around;
+  height: 602px;
+  padding-top: 39px;
+  -webkit-align-items: center;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.centerRiddle {
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+}
+
+.infoList {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 600px;
+  padding-top: 39px;
+  padding-left: 20px;
 }
