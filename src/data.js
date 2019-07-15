@@ -40,7 +40,17 @@ const grabb1 = new GrabbModel(
     }
   ],
   11,
-  2
+  2,
+  [
+    {
+      points: 6,
+      win: true
+    },
+    {
+      points: 5,
+      win: true
+    }
+  ]
 );
 const grabb2 = new GrabbModel(
   "Tobias",
@@ -435,7 +445,7 @@ const grabb10 = new GrabbModel(
     }
   ],
   2,
-  6
+  0
 );
 
 export const grabbar = [

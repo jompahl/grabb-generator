@@ -333,3 +333,12 @@
   padding-top: 39px;
   padding-left: 20px;
 }
+
+.addScore {
+  display: -webkit-flex;
+  display: flex;
+  padding-top: 10px;
+  justify-content: space-around;
+  width: 640px;
+  padding-left: 10px;
+}
