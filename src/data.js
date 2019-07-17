@@ -93,7 +93,14 @@ const grabb2 = new GrabbModel(
     }
   ],
   2,
-  0
+  4,
+  [
+    { points: 2, win: false },
+    {
+      points: 0,
+      win: false
+    }
+  ]
 );
 
 const grabb3 = new GrabbModel(
@@ -137,7 +144,17 @@ const grabb3 = new GrabbModel(
     }
   ],
   9,
-  1
+  1,
+  [
+    {
+      points: 2,
+      win: false
+    },
+    {
+      points: 5,
+      win: true
+    }
+  ]
 );
 
 const grabb4 = new GrabbModel(
@@ -181,7 +198,17 @@ const grabb4 = new GrabbModel(
     }
   ],
   5,
-  1
+  1,
+  [
+    {
+      points: 0,
+      win: false
+    },
+    {
+      points: 5,
+      win: true
+    }
+  ]
 );
 
 const grabb5 = new GrabbModel(
@@ -225,7 +252,17 @@ const grabb5 = new GrabbModel(
     }
   ],
   0,
-  0
+  0,
+  [
+    {
+      points: 0,
+      win: false
+    },
+    {
+      points: 0,
+      win: false
+    }
+  ]
 );
 
 const grabb6 = new GrabbModel(
@@ -269,7 +306,17 @@ const grabb6 = new GrabbModel(
     }
   ],
   0,
-  0
+  0,
+  [
+    {
+      points: 0,
+      win: false
+    },
+    {
+      points: 0,
+      win: false
+    }
+  ]
 );
 
 const grabb7 = new GrabbModel(
@@ -313,7 +360,17 @@ const grabb7 = new GrabbModel(
     }
   ],
   9,
-  1
+  1,
+  [
+    {
+      points: 4,
+      win: false
+    },
+    {
+      points: 5,
+      win: true
+    }
+  ]
 );
 
 const grabb8 = new GrabbModel(
@@ -357,7 +414,17 @@ const grabb8 = new GrabbModel(
     }
   ],
   0,
-  0
+  0,
+  [
+    {
+      points: 0,
+      win: false
+    },
+    {
+      points: 0,
+      win: false
+    }
+  ]
 );
 
 const grabb9 = new GrabbModel(
@@ -401,7 +468,17 @@ const grabb9 = new GrabbModel(
     }
   ],
   6,
-  1
+  1,
+  [
+    {
+      points: 6,
+      win: true
+    },
+    {
+      points: 0,
+      win: false
+    }
+  ]
 );
 
 const grabb10 = new GrabbModel(
@@ -445,7 +522,8 @@ const grabb10 = new GrabbModel(
     }
   ],
   2,
-  0
+  0,
+  [{ points: 2, win: false }]
 );
 
 export const grabbar = [
