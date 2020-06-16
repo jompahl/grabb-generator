@@ -28,7 +28,7 @@
   width: 429px;
   background-size: contain;
   background-repeat: no-repeat;
-  font-family: "din pro";
+  font-family: 'din pro';
   font-weight: bold;
   font-size: 35px;
   position: relative;
@@ -187,7 +187,7 @@
 }
 
 .square.isWinning:before {
-  content: "";
+  content: '';
   display: block;
   background: #444;
   position: absolute;
@@ -354,4 +354,64 @@
   display: flex;
   margin-right: 16px;
   margin-top: 10px;
+}
+
+.grabbermindTable {
+  border: 1px solid black;
+  box-shadow: 0 1px 14px 4px rgba(0, 0, 0, 0.4);
+  width: 320px;
+  height: 640px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 26px;
+  position: relative;
+}
+
+.grabbermind {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.popover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.buttonMind {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sideBar {
+  display: flex;
+  height: 642px;
+  margin-top: 5px;
+  flex-direction: column-reverse;
+  width: 80px;
+}
+
+.sidebarResult {
+  display: flex;
+  height: 642px;
+  width: 80px;
+  flex-direction: column;
+  padding-top: 7px;
+  flex-direction: column-reverse;
+}
+
+.sidebarResults {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 80px;
+  width: 80px;
+  border: 1px solid rgb(255, 0, 0);
 }

@@ -5,6 +5,7 @@ import Grabbar from "./pages/Grabbar";
 import Settings from "./pages/Settings";
 import GrabbLiga from "./pages/GrabbLiga";
 import Riddle from "./pages/Riddle";
+import Grabbermind from "./pages/Grabbermind";
 
 class App extends Component {
   render() {
@@ -16,12 +17,14 @@ class App extends Component {
           <Link to="/grabbliga">GrabbLiga</Link>
           <Link to="/settings">Tic Tac Toe</Link>
           <Link to="/riddle">GrabbGåta</Link>
+          <Link to="/Grabbermind">Grabbermind</Link>
         </nav>
         <Route exact path="/" render={() => <div>jompahl bajs</div>} />
         <Route path="/grabbar" render={() => <Grabbar />} />
         <Route path="/settings" render={() => <Settings />} />
         <Route path="/grabbliga" render={() => <GrabbLiga />} />
         <Route path="/riddle" render={() => <Riddle />} />
+        <Route path="/Grabbermind" render={() => <Grabbermind />} />
       </Router>
     );
   }
