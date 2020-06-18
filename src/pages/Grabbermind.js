@@ -18,12 +18,12 @@ class Grabbermind extends Component {
         'White',
         'Gray',
         'Pink',
-        'Yellow'
+        'Yellow',
       ],
       sidebarResults: Array(8).fill(''),
       rowCount: 0,
       gameIsOn: false,
-      colorArray: Array(4).fill('')
+      colorArray: Array(4).fill(''),
     }
   }
 
@@ -124,7 +124,7 @@ class Grabbermind extends Component {
   }
 
   render() {
-    const { table, buttons, rowCount, sidebarResults } = this.state
+    const { table, buttons, rowCount, sidebarResults, gameIsOn } = this.state
 
     let arrow = <Icon icon='arrow-right' size={40} top={10 * rowCount} />
 
@@ -146,7 +146,7 @@ class Grabbermind extends Component {
                       gridTemplateColumns='repeat(4, auto)'
                       gridGap={10}
                     >
-                      {buttons.map(value => {
+                      {buttons.map((value) => {
                         return (
                           <Button
                             key={value}
@@ -157,7 +157,7 @@ class Grabbermind extends Component {
                             border='2px solid rgba(0, 0, 0, .2)'
                             height={30}
                             width={30}
-                            onClick={event => {
+                            onClick={(event) => {
                               this.changeColor(value, index)
                             }}
                             padding={0}
@@ -172,10 +172,11 @@ class Grabbermind extends Component {
                     alignItems='center'
                     height={80}
                     width={80}
+                    disabled={!gameIsOn}
                     style={{
                       position: 'absolute',
                       left: 80 * (index % 4),
-                      bottom: 80 * Math.floor(index / 4)
+                      bottom: 80 * Math.floor(index / 4),
                     }}
                   >
                     <Pane
@@ -186,7 +187,7 @@ class Grabbermind extends Component {
                       height={50}
                       width={50}
                       style={{
-                        border: value ? '2px solid rgba(0, 0, 0, .2)' : 'none'
+                        border: value ? '2px solid rgba(0, 0, 0, .2)' : 'none',
                       }}
                     />
                   </Button>
@@ -195,14 +196,14 @@ class Grabbermind extends Component {
             })}
           </div>{' '}
           <button
-            onClick={event => {
+            onClick={(event) => {
               this.checkRow()
             }}
           >
             Check row
           </button>
           <button
-            onClick={event => {
+            onClick={(event) => {
               this.startGame()
             }}
           >
@@ -249,51 +250,49 @@ class Result extends React.Component {
     if (!Array.isArray(answers)) {
       return null
     }
-    let red = 0,
-      white = 0,
-      b_match = new Array(correctAnswer.length).fill(false),
-      w_match = new Array(correctAnswer.length).fill(false)
-    for (let i = 0; i < correctAnswer.length; i++) {
-      if (answers[i] === correctAnswer[i]) {
-        b_match[i] = true
-        w_match[i] = true
-        red++
-      }
-    }
-    for (let i = 0; i < correctAnswer.length; i++) {
-      if (b_match[i]) continue
-      for (let j = 0; j < correctAnswer.length; j++) {
-        if (i == j || w_match[j]) continue
-        if (answers[i] === correctAnswer[j]) {
-          w_match[j] = true
-          white++
-          break
-        }
-      }
-    }
 
-    console.log({ answers, correctAnswer })
-
-    //let red = 0
-    //let white = 0
+    let red = 0
+    let white = 0
+    let whiteArray = Array(4).fill('')
+    let redArray = Array(4).fill('')
 
     for (let i = 0; i < answers.length; i++) {
       const answer = answers[i]
       if (answer === correctAnswer[i]) {
+        whiteArray[i] = answer
         white++
       }
     }
 
     for (let i = 0; i < answers.length; i++) {
       const answer = answers[i]
-      if (correctAnswer.includes(answer)) {
-      }
+      if (
+        correctAnswer.includes(answer) &&
+        !whiteArray.includes(answer) &&
+        !redArray.includes(answer)
+      ) {
+        redArray[i] = answer
+        red++
+      } /* else if (
+        correctAnswer.includes(answer) &&
+        whiteArray.includes(answer)
+      ) {
+        let indexWhereColorIs = null
+
+        for (let j = 0; j < whiteArray; j++) {
+          if (whiteArray[j] === answer) {
+            indexWhereColorIs = j
+          }
+        }
+
+        if (indexWhereColorIs < i) {
+          redArray = answer
+          red++
+        }
+      } */
     }
 
-    //else if (correctAnswer.includes(answer)) {
-    //  red++
-    //}
-
+    console.log({ answers, correctAnswer })
     console.log('antal vita: ' + white + ' antal röda: ' + red)
     let results = Array(4).fill('')
 
@@ -312,11 +311,18 @@ class Result extends React.Component {
             <div
               key={index}
               background={value}
+              className='correctingPins'
               borderradius='50%'
-              border='2px solid rgba(0, 0, 0, .2)'
-            >
-              {value}
-            </div>
+              height={50}
+              width={50}
+              style={{
+                background: value,
+                border: value ? '2px solid rgba(0, 0, 0, .2)' : 'none',
+                borderradius: '50%',
+                height: value ? 20 : 'none',
+                width: value ? 20 : 'none',
+              }}
+            ></div>
           )
         })}
       </div>
