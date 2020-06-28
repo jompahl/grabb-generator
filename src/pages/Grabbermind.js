@@ -23,6 +23,7 @@ class Grabbermind extends Component {
       sidebarResults: Array(8).fill(''),
       rowCount: 0,
       gameIsOn: false,
+      gameWon: false,
       colorArray: Array(4).fill(''),
     }
   }
@@ -58,14 +59,19 @@ class Grabbermind extends Component {
   }
 
   checkRow() {
-    let { rowCount, table, colorArray } = this.state
+    let { rowCount, table, colorArray, gameIsOn } = this.state
     let red = 0
     let white = 0
     let sidebarResults = [...this.state.sidebarResults]
 
     console.log('checkrow pushed ' + this.state.colorArray)
 
-    let currentRowNumber = 0
+    let currentRowNumber = 4
+
+    if (!gameIsOn) {
+      alert('please start game first')
+      return
+    }
 
     if (rowCount !== 0) {
       currentRowNumber = rowCount * 4
@@ -83,50 +89,27 @@ class Grabbermind extends Component {
     console.log('rowcount: ' + rowCount)
 
     this.setState({ rowCount: rowCount })
-
-    /*if (rowCount === 0) {
-      let arrayNumber = 4 * rowCount
-
-      for (
-        var i = table.length - arrayNumber;
-        i < table.length - arrayNumber + 4;
-        i++
-      ) {
-        if (table[i] === '') {
-          return 'please fill the whole grabbrow'
-        }
-      }
-      for (var a = 0; a < colorArray.length; a++) {
-        if (table[28 + a] === colorArray[a]) {
-          white = white + 1
-        } else if (colorArray.includes(table[28 + a])) {
-          red = red + 1
-        }
-      }
-      console.log('antal vita: ' + white + ' antal röda: ' + red)
-      let results = Array(4).fill('')
-
-      for (var i = 0; i < red; i++) {
-        results.push('red')
-      }
-
-      for (var i = 0; i < white; i++) {
-        results.push('white')
-      }
-
-      sidebarResults[rowCount] = results
-      console.log(sidebarResults + ' jompahl ' + results)
-
-      rowCount = rowCount + 1
-      this.setState({ rowCount: rowCount, sidebarResults })
-      console.log(rowCount)
-    }*/
   }
 
   render() {
     const { table, buttons, rowCount, sidebarResults, gameIsOn } = this.state
 
-    let arrow = <Icon icon='arrow-right' size={40} top={10 * rowCount} />
+    let disableLow = 4 + rowCount * 4
+    let disableHigh = rowCount * 4
+
+    let arrow = (
+      <Icon
+        icon='arrow-right'
+        size={40}
+        color='success'
+        style={{
+          position: 'absolute',
+          visibility: !gameIsOn ? 'hidden' : 'visible',
+
+          bottom: rowCount > 0 ? 173 + 81 * rowCount : 173,
+        }}
+      />
+    )
 
     return (
       <div className='grabbermind'>
@@ -172,7 +155,11 @@ class Grabbermind extends Component {
                     alignItems='center'
                     height={80}
                     width={80}
-                    disabled={!gameIsOn}
+                    disabled={
+                      gameIsOn
+                        ? index >= disableLow || index < disableHigh
+                        : 'none'
+                    }
                     style={{
                       position: 'absolute',
                       left: 80 * (index % 4),
@@ -211,17 +198,7 @@ class Grabbermind extends Component {
           </button>
           <Icon icon='cross' />
         </div>
-        {/* <div className='sidebarResult'>
-          {sidebarResults.map((value, index) => {
-            return (
-              <div className='sidebarResults' key={index}>
-                {Array.isArray(value)
-                  ? value.map((value, index) => <div key={index}>{value}</div>)
-                  : null}
-              </div>
-            )
-          })}
-        </div> */}
+        {}
         <div className='sidebarResult'>
           {Array(table.length / 4)
             .fill('')
@@ -248,79 +225,56 @@ class Result extends React.Component {
   render() {
     const { answers, correctAnswer } = this.props
     if (!Array.isArray(answers)) {
+      console.log('fastnade i första +' + answers)
       return null
+    } else if (Array.isArray(answers)) {
+      console.log(answers)
     }
 
-    let red = 0
-    let white = 0
-    let whiteArray = Array(4).fill('')
-    let redArray = Array(4).fill('')
+    console.log({ answers, correctAnswer })
+    let results = Array(4).fill('')
 
     for (let i = 0; i < answers.length; i++) {
       const answer = answers[i]
+
       if (answer === correctAnswer[i]) {
-        whiteArray[i] = answer
-        white++
+        results[i] = ['white', answer]
       }
     }
 
     for (let i = 0; i < answers.length; i++) {
       const answer = answers[i]
-      if (
-        correctAnswer.includes(answer) &&
-        !whiteArray.includes(answer) &&
-        !redArray.includes(answer)
-      ) {
-        redArray[i] = answer
-        red++
-      } /* else if (
-        correctAnswer.includes(answer) &&
-        whiteArray.includes(answer)
-      ) {
-        let indexWhereColorIs = null
 
-        for (let j = 0; j < whiteArray; j++) {
-          if (whiteArray[j] === answer) {
-            indexWhereColorIs = j
-          }
-        }
+      if (results[i] || !correctAnswer.includes(answer)) {
+        continue
+      }
 
-        if (indexWhereColorIs < i) {
-          redArray = answer
-          red++
-        }
-      } */
+      const total = correctAnswer.filter((color) => color === answer).length
+      const current = results.filter((result) => result[1] === answer).length
+
+      if (current < total) {
+        results[i] = ['red', answer]
+      }
+      console.log(results[0][i])
     }
 
-    console.log({ answers, correctAnswer })
-    console.log('antal vita: ' + white + ' antal röda: ' + red)
-    let results = Array(4).fill('')
-
-    for (var i = 0; i < red; i++) {
-      results.push('red')
-    }
-
-    for (var i = 0; i < white; i++) {
-      results.push('white')
-    }
+    console.log(results)
+    console.log(results[0][0])
 
     return (
-      <div>
+      <div className='pinHolder'>
         {results.map((value, index) => {
           return (
             <div
               key={index}
-              background={value}
               className='correctingPins'
-              borderradius='50%'
-              height={50}
-              width={50}
               style={{
-                background: value,
+                background: value[0],
                 border: value ? '2px solid rgba(0, 0, 0, .2)' : 'none',
                 borderradius: '50%',
                 height: value ? 20 : 'none',
                 width: value ? 20 : 'none',
+                margin: value ? 5 : 'none',
               }}
             ></div>
           )
