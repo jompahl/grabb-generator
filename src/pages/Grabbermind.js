@@ -106,7 +106,7 @@ class Grabbermind extends Component {
           position: 'absolute',
           visibility: !gameIsOn ? 'hidden' : 'visible',
 
-          bottom: rowCount > 0 ? 173 + 81 * rowCount : 173,
+          bottom: rowCount > 0 ? 20 + 81 * rowCount : 20,
         }}
       />
     )
