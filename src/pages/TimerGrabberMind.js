@@ -26,7 +26,7 @@ class Timer extends Component {
   }
 
   start = () => {
-    this.myInterval = setInterval(this.decrementCount, 1000)
+    this.myInterval = setInterval(this.incrementCount, 1000)
   }
 
   stop = () => {
@@ -40,6 +40,8 @@ class Timer extends Component {
     if (this.props.isRunning && !prevProps.isRunning) {
       this.start()
     } else if (!this.props.isRunning && prevProps.isRunning) {
+      this.stop()
+    } else if (!this.props.didWin && prevProps.didWin) {
       this.stop()
     }
 

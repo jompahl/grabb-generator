@@ -4,6 +4,7 @@ import { Pane } from 'evergreen-ui/commonjs/layers'
 import { Button, Icon } from 'evergreen-ui'
 import { MdRepeat } from 'react-icons/md'
 import { Position } from 'evergreen-ui/commonjs/constants'
+import TimerGrabberMind from './TimerGrabberMind'
 
 class Grabbermind extends Component {
   constructor(props) {
@@ -60,13 +61,10 @@ class Grabbermind extends Component {
 
   checkRow() {
     let { rowCount, table, colorArray, gameIsOn } = this.state
-    let red = 0
-    let white = 0
-    let sidebarResults = [...this.state.sidebarResults]
 
     console.log('checkrow pushed ' + this.state.colorArray)
 
-    let currentRowNumber = 4
+    let currentRowNumber = 0
 
     if (!gameIsOn) {
       alert('please start game first')
@@ -74,13 +72,13 @@ class Grabbermind extends Component {
     }
 
     if (rowCount !== 0) {
-      currentRowNumber = rowCount * 4
+      currentRowNumber = rowCount * 4 + 4
     }
 
     for (var i = 0; i < currentRowNumber; i++) {
       if (table[i] === '') {
-        console.log('inte full')
-        return 'please fill the whole grabbrow'
+        alert('please fill the whole row')
+        return
       }
     }
 
@@ -91,8 +89,55 @@ class Grabbermind extends Component {
     this.setState({ rowCount: rowCount })
   }
 
+  getCorrectedRows = () => {
+    const { colorArray: correctAnswer, rowCount, table } = this.state //fråga tobbe angående colorArray:
+    const rows = []
+
+    for (let i = 0; i < table.length / 4; i++) {
+      if (i >= rowCount) {
+        rows.push([])
+        continue //fråga tobbe vad meniingen med denna if satsen är
+      }
+
+      const answers = table.slice(i * 4, i * 4 + 4)
+      const results = Array(4).fill('')
+
+      for (let i = 0; i < answers.length; i++) {
+        const answer = answers[i]
+
+        if (answer === correctAnswer[i]) {
+          results[i] = ['white', answer]
+        }
+      }
+
+      for (let i = 0; i < answers.length; i++) {
+        const answer = answers[i]
+
+        if (results[i] || !correctAnswer.includes(answer)) {
+          continue // fråga tobbe varför vi gör denna checken är det för att effektivisera?
+        }
+
+        const total = correctAnswer.filter((color) => color === answer).length
+        const current = results.filter((result) => result[1] === answer).length
+
+        if (current < total) {
+          results[i] = ['red', answer]
+        }
+      }
+
+      const colors = results.map((r) => r[0]).filter((r) => r != null)
+      rows.push(colors)
+    }
+
+    return rows
+  }
+
   render() {
     const { table, buttons, rowCount, sidebarResults, gameIsOn } = this.state
+
+    const correctedRows = this.getCorrectedRows()
+    const lastRow = rowCount > 0 ? correctedRows[rowCount - 1] : []
+    const didWin = lastRow.filter((color) => color === 'white').length === 4
 
     let disableLow = 4 + rowCount * 4
     let disableHigh = rowCount * 4
@@ -113,7 +158,16 @@ class Grabbermind extends Component {
 
     return (
       <div className='grabbermind'>
-        <div className='sideBar'>{arrow}</div>
+        <div
+          className='winningPage'
+          style={{ visibility: didWin ? 'visible' : 'hidden' }}
+        >
+          You won Your score is:{' '}
+        </div>
+        <div className='sideBar'>
+          <TimerGrabberMind seconds={0} isRunning={gameIsOn} />
+          {arrow}
+        </div>
         <div>
           <div className='grabbermindTable'>
             {table.map((value, index) => {
@@ -154,7 +208,7 @@ class Grabbermind extends Component {
                     justifyContent='center'
                     alignItems='center'
                     height={80}
-                    width={80}
+                    width='25%'
                     disabled={
                       gameIsOn
                         ? index >= disableLow || index < disableHigh
@@ -200,21 +254,11 @@ class Grabbermind extends Component {
         </div>
         {}
         <div className='sidebarResult'>
-          {Array(table.length / 4)
-            .fill('')
-            .map((c, index) => (
-              <div className='sidebarResults' key={index}>
-                <Result
-                  hello='hello'
-                  correctAnswer={this.state.colorArray}
-                  answers={
-                    rowCount > index
-                      ? table.slice(index * 4, index * 4 + 4)
-                      : null
-                  }
-                />
-              </div>
-            ))}
+          {correctedRows.map((row, index) => (
+            <div className='sidebarResults' key={index}>
+              <Result results={row} />
+            </div>
+          ))}
         </div>
       </div>
     )
@@ -223,43 +267,15 @@ class Grabbermind extends Component {
 
 class Result extends React.Component {
   render() {
-    const { answers, correctAnswer } = this.props
-    if (!Array.isArray(answers)) {
+    const { answers, correctAnswer, results } = this.props
+    if (!Array.isArray(results)) {
       console.log('fastnade i första +' + answers)
       return null
     } else if (Array.isArray(answers)) {
-      console.log(answers)
+      console.log(results)
     }
 
-    console.log({ answers, correctAnswer })
-    let results = Array(4).fill('')
-
-    for (let i = 0; i < answers.length; i++) {
-      const answer = answers[i]
-
-      if (answer === correctAnswer[i]) {
-        results[i] = ['white', answer]
-      }
-    }
-
-    for (let i = 0; i < answers.length; i++) {
-      const answer = answers[i]
-
-      if (results[i] || !correctAnswer.includes(answer)) {
-        continue
-      }
-
-      const total = correctAnswer.filter((color) => color === answer).length
-      const current = results.filter((result) => result[1] === answer).length
-
-      if (current < total) {
-        results[i] = ['red', answer]
-      }
-      console.log(results[0][i])
-    }
-
-    console.log(results)
-    console.log(results[0][0])
+    console.log('jompahl' + results)
 
     return (
       <div className='pinHolder'>
@@ -269,7 +285,7 @@ class Result extends React.Component {
               key={index}
               className='correctingPins'
               style={{
-                background: value[0],
+                background: value,
                 border: value ? '2px solid rgba(0, 0, 0, .2)' : 'none',
                 borderradius: '50%',
                 height: value ? 20 : 'none',
