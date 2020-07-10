@@ -6,6 +6,7 @@ class Timer extends Component {
 
     this.state = {
       count: parseInt(this.props.seconds),
+      maxTime: parseInt(this.props.maxTime),
     }
   }
 
@@ -30,23 +31,30 @@ class Timer extends Component {
   }
 
   stop = () => {
+    this.props.onGameEnded(this.state.count)
     clearInterval(this.myInterval)
     this.setState({
-      count: this.state.count + parseInt(this.props.increment),
+      count: this.state.count,
     })
+  }
+
+  reset = () => {
+    this.setState({ count: 0 })
+    this.start()
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.isRunning && !prevProps.isRunning) {
       this.start()
     } else if (!this.props.isRunning && prevProps.isRunning) {
-      this.stop()
-    } else if (!this.props.didWin && prevProps.didWin) {
+      this.reset()
+    } else if (this.props.didWin && !prevProps.didWin) {
+      console.log('timer stopped')
       this.stop()
     }
 
     if (this.state.count === 0 && prevState.count !== 0) {
-      this.props.onTimerEnded()
+      this.props.onGameEnded()
     }
   }
 
@@ -56,7 +64,11 @@ class Timer extends Component {
 
   render() {
     const { count } = this.state
-    return <div className='Timer'>{count}</div>
+    return (
+      <div className='Timer' style={{ fontSize: 27 }}>
+        {count}
+      </div>
+    )
   }
 }
 

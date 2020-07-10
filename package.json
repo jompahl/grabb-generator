@@ -14,7 +14,8 @@
     "react-icons": "^3.7.0",
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "2.1.5"
+    "react-scripts": "2.1.5",
+    "react-tooltip": "^4.2.7"
   },
   "scripts": {
     "start": "react-scripts start",
